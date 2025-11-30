@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Analysis Result - Bug Triage Assistant</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="container">
+
+    <header class="nav small">
+      <div class="brand">
+  
+        <div>
+          <strong>Bug Triage Assistant</strong>
+        </div>
+      </div>
+    </header>
+
+    <main class="result-card">
+      <h1>Analysis Result</h1>
+
+      {% if result %}
+        <section>
+          <h2>Log Analysis</h2>
+          <pre class="result-block">{{ result.log_analysis or 'No analysis produced.' }}</pre>
+        </section>
+
+        <section>
+          <h2>Root Cause</h2>
+          <pre class="result-block">{{ result.root_cause or 'No root cause identified.' }}</pre>
+        </section>
+
+        <section>
+          <h2>Fix Suggestion</h2>
+          <pre class="result-block">{{ result.fix_suggestion or 'No fix suggestion provided.' }}</pre>
+        </section>
+
+        {% if result.fix_code %}
+          <section>
+            <h2>Fixed Code (patch)</h2>
+
+            <div style="display:flex;gap:10px;align-items:center;margin-bottom:8px">
+              <button class="btn ghost" id="copyCodeBtn">Copy code</button>
+              <button class="btn ghost" id="downloadPatchBtn">Download patch</button>
+              <small style="color:var(--muted);margin-left:auto">Review & test before applying</small>
+            </div>
+
+            <pre class="result-block" id="fixCodeBlock">{{ result.fix_code }}</pre>
+          </section>
+        {% endif %}
+
+      {% else %}
+        <section>
+          <p style="color:var(--muted)">No analysis available. Try submitting an error log first.</p>
+        </section>
+      {% endif %}
+
+      <div class="form-row" style="margin-top:18px">
+        <a href="/" class="btn ghost">Analyze another</a>
+      </div>
+    </main>
+
+    <footer>
+      <p style="color:var(--muted)">Tip: Use the copy button to paste the suggested fix into your editor quickly.</p>
+    </footer>
+  </div>
+
+  <!-- Small client-side helpers: copy and download -->
+  <script>
+    (function(){
+      const copyBtn = document.getElementById('copyCodeBtn');
+      const downloadBtn = document.getElementById('downloadPatchBtn');
+      const codeBlock = document.getElementById('fixCodeBlock');
+
+      if(copyBtn && codeBlock){
+        copyBtn.addEventListener('click', async function(){
+          const code = codeBlock.innerText;
+          try {
+            await navigator.clipboard.writeText(code);
+            const old = this.innerText;
+            this.innerText = 'Copied ✓';
+            setTimeout(()=> this.innerText = old, 1600);
+          } catch(e){
+            alert('Copy failed — select the code and copy manually.');
+          }
+        });
+      }
+
+      if(downloadBtn && codeBlock){
+        downloadBtn.addEventListener('click', function(){
+          const content = codeBlock.innerText;
+          const blob = new Blob([content], {type: 'text/plain;charset=utf-8'});
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'fix_patch.txt';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(url);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
