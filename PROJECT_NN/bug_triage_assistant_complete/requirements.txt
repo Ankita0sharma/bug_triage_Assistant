@@ -1,4 +1,5 @@
 flask
+gunicorn
 crewai
 litellm
 google-generativeai
