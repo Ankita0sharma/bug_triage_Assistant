@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Bug Triage Assistant</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+  <div class="container">
+    
+    <!-- HEADER -->
+    <header class="nav">
+      <div class="brand">
+        
+        <div>
+          <strong>Bug Triage Assistant</strong>
+          <small style="display:block;color:var(--muted)">
+            Paste logs & get root-cause + fix suggestions
+          </small>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="hero">
+
+      <!-- LEFT CARD -->
+      <section class="hero-card">
+        <h1>Paste an error log or a code snippet — get a fix suggestion</h1>
+
+        <p class="lead">
+          Submit your error log and optional code snippet.  
+          The AI analyzes the log, identifies the root cause,  
+          and generates step-by-step fixes (including corrected code).
+        </p>
+
+        {% if error %}
+        <div style="margin-bottom:10px;padding:10px;border-radius:8px;background:rgba(255,90,90,0.06);color:#ffdede">
+          {{ error }}
+        </div>
+        {% endif %}
+
+        <form action="/analyze" method="post" class="form" autocomplete="off">
+          <label for="error_log">Error Log <small style="color:var(--muted)">(required)</small></label>
+          <textarea id="error_log" name="error_log" placeholder="Paste the error log or stack trace here..." required>{{ request.form.error_log if request.form else '' }}</textarea>
+
+          <label for="code_snippet">Code Snippet (optional)</label>
+          <textarea id="code_snippet" name="code_snippet" placeholder="Paste relevant code (optional)">{{ request.form.code_snippet if request.form else '' }}</textarea>
+
+          <div class="form-row" style="margin-top:12px">
+            <button class="btn primary" type="submit">Analyze</button>
+            <button class="btn ghost" type="reset">Clear</button>
+          </div>
+        </form>
+
+        <div class="notes" style="margin-top:16px">
+          <strong>Tips</strong>
+          <ul style="margin:8px 0 0 18px;color:var(--muted)">
+            <li>Paste the complete stack trace for best results.</li>
+            <li>Include minimal reproducible code if possible.</li>
+            <li>You may receive a ready-to-paste fix patch.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- RIGHT PANEL -->
+      <aside class="panel">
+
+        <!-- ★ FINAL WORKING IMAGE (same as screenshot) -->
+        <img 
+          src="https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg?auto=compress&cs=tinysrgb&w=800" 
+          alt="illustration"
+          class="hero-illustration"
+          style="border-radius:12px"
+        >
+
+        <div class="stats" style="margin-top:14px">
+          <div class="stat">
+            <h3>Fast</h3>
+            <p>Quick analysis</p>
+          </div>
+          <div class="stat">
+            <h3>Practical</h3>
+            <p>Actionable fixes</p>
+          </div>
+        </div>
+      </aside>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer style="margin-top:20px">
+      <p style="color:var(--muted)">
+        Tip: Always review generated patches before applying.
+      </p>
+    </footer>
+
+  </div>
+</body>
+</html>
