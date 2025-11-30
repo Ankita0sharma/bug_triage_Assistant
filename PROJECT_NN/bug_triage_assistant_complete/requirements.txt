@@ -1,0 +1,5 @@
+flask
+crewai
+litellm
+google-generativeai
+python-dotenv
