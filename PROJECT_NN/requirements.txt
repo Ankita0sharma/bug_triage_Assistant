@@ -1,7 +1,8 @@
-
+google-generativeai
 Flask==2.3.2
 gunicorn==20.1.0
 python-dotenv==1.0.0
 # If these packages are available on PyPI, keep them; otherwise remove them and follow vendor/install docs
 crewai
 litellm
+
