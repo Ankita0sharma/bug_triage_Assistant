@@ -33,19 +33,15 @@
         </section>
 
         <section>
-          <h2>Fix Suggestion</h2>
+          <h2> Fixed Code (patch)</h2>
           <pre class="result-block">{{ result.fix_suggestion or 'No fix suggestion provided.' }}</pre>
         </section>
 
         {% if result.fix_code %}
           <section>
-            <h2>Fixed Code (patch)</h2>
+            <h2>Fix Suggestion</h2>
 
-            <div style="display:flex;gap:10px;align-items:center;margin-bottom:8px">
-              <button class="btn ghost" id="copyCodeBtn">Copy code</button>
-              <button class="btn ghost" id="downloadPatchBtn">Download patch</button>
-              <small style="color:var(--muted);margin-left:auto">Review & test before applying</small>
-            </div>
+
 
             <pre class="result-block" id="fixCodeBlock">{{ result.fix_code }}</pre>
           </section>
