@@ -4,3 +4,4 @@ litellm
 google-generativeai
 python-dotenv
 gunicorn==20.1.0
+setuptools<81
