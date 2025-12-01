@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request
-from crew import BugTriageCrew
-
+from PROJECT_NN.bug_triage_assistant_complete.crew import BugTriageCrew
 app = Flask(__name__)
 crew = BugTriageCrew()
 
